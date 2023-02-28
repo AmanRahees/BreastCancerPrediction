@@ -2,8 +2,11 @@ import numpy as np
 import pickle
 import streamlit as st
 import sklearn
+from sklearn.preprocessing import StandardScaler
 
 loaded_model = pickle.load(open('trained_model.sav', 'rb'))
+
+scalar = StandardScaler()
 
 def breast_cancer_prediction(input_data):
 
@@ -11,7 +14,7 @@ def breast_cancer_prediction(input_data):
 
     inp_datas = inp_data.reshape(1,-1)
 
-    prediction = loaded_model.predict(inp_datas)
+    prediction = loaded_model.predict(scalar.fit_transform(inp_datas))
 
     if (prediction==0):
         return 'Benign'
@@ -61,7 +64,7 @@ def main():
         diagnosis = breast_cancer_prediction([radius_mean, texture_mean, perimeter_mean, area_mean, smoothness_mean, compactness_mean, concavity_mean,
                                               concave_points_mean, symmetry_mean, fractal_dimension_mean, radius_se, texture_se, perimeter_se, area_se,
                                               smoothness_se, compactness_se, concavity_se, concave_points_se, symmetry_se, fractal_dimension_se, radius_worst, 
-                                              texture_worst, perimeter_worst, area_worst, smoothness_worst, compactness_worst, concavity_worst, concavity_worst,
+                                              texture_worst, perimeter_worst, area_worst, smoothness_worst, compactness_worst,
                                               concavity_worst, concave_points_worst, symmetry_worst, fractal_dimension_worst
                                               ])
         
